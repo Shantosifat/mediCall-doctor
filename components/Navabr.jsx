@@ -1,0 +1,62 @@
+"use client"
+import Link from "next/link"
+import { useState } from "react"
+import { FaHeartbeat } from "react-icons/fa"
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <nav className="sticky top-0 z-50 bg-background border-b border-border">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16 items-center">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2">
+            <FaHeartbeat className="text-primary text-2xl" />
+            <span className="text-xl font-bold text-foreground">MediCall</span>
+          </Link>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex space-x-8">
+            <Link href="/" className="text-foreground hover:text-primary">Home</Link>
+            <Link href="/doctors" className="text-foreground hover:text-primary">Doctors</Link>
+            <Link href="/appointments" className="text-foreground hover:text-primary">Appointments</Link>
+            <Link href="/about" className="text-foreground hover:text-primary">About</Link>
+            <Link href="/contact" className="text-foreground hover:text-primary">Contact</Link>
+          </div>
+
+          {/* CTA */}
+          <div className="hidden md:flex space-x-4">
+            <Link href="/appointments" className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition">
+              Book Appointment
+            </Link>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2 rounded-md text-foreground hover:bg-muted"
+          >
+            ☰
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden bg-background border-t border-border px-4 pb-4 space-y-2">
+          <Link href="/" className="block text-foreground hover:text-primary">Home</Link>
+          <Link href="/doctors" className="block text-foreground hover:text-primary">Doctors</Link>
+          <Link href="/appointments" className="block text-foreground hover:text-primary">Appointments</Link>
+          <Link href="/about" className="block text-foreground hover:text-primary">About</Link>
+          <Link href="/contact" className="block text-foreground hover:text-primary">Contact</Link>
+          <div className="pt-3">
+            <Link href="/appointments" className="block text-center px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition">
+              Book Appointment
+            </Link>
+          </div>
+        </div>
+      )}
+    </nav>
+  )
+}
