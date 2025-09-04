@@ -1,14 +1,21 @@
-"use client"
-import Link from "next/link"
-import { useState } from "react"
-import { FaHeartbeat } from "react-icons/fa"
+"use client";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
+import Link from "next/link";
+import { useState } from "react";
+import { FaHeartbeat } from "react-icons/fa";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 bg-background border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="fixed left-o top-0 w-full z-50 bg-slate-700 border-b border-border">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
@@ -18,18 +25,51 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8">
-            <Link href="/" className="text-foreground hover:text-primary">Home</Link>
-            <Link href="/doctors" className="text-foreground hover:text-primary">Doctors</Link>
-            <Link href="/appointments" className="text-foreground hover:text-primary">Appointments</Link>
-            <Link href="/about" className="text-foreground hover:text-primary">About</Link>
-            <Link href="/contact" className="text-foreground hover:text-primary">Contact</Link>
+            <Link href="/" className="text-foreground hover:text-primary">
+              Home
+            </Link>
+            <Link
+              href="/doctors"
+              className="text-foreground hover:text-primary"
+            >
+              Doctors
+            </Link>
+            <Link
+              href="/appointments"
+              className="text-foreground hover:text-primary"
+            >
+              Appointments
+            </Link>
+            <Link href="/about" className="text-foreground hover:text-primary">
+              About
+            </Link>
+            <Link
+              href="/contact"
+              className="text-foreground hover:text-primary"
+            >
+              Contact
+            </Link>
           </div>
 
           {/* CTA */}
           <div className="hidden md:flex space-x-4">
-            <Link href="/appointments" className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition">
-              Book Appointment
-            </Link>
+            <SignedOut>
+              <SignInButton />
+              <SignUpButton>
+                <button className="bg-[#6c47ff] text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                  Sign Up
+                </button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+              <Link
+                href="/appointments"
+                className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition"
+              >
+                Book Appointment
+              </Link>
+            </SignedIn>
           </div>
 
           {/* Mobile menu button */}
@@ -45,18 +85,43 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-background border-t border-border px-4 pb-4 space-y-2">
-          <Link href="/" className="block text-foreground hover:text-primary">Home</Link>
-          <Link href="/doctors" className="block text-foreground hover:text-primary">Doctors</Link>
-          <Link href="/appointments" className="block text-foreground hover:text-primary">Appointments</Link>
-          <Link href="/about" className="block text-foreground hover:text-primary">About</Link>
-          <Link href="/contact" className="block text-foreground hover:text-primary">Contact</Link>
+          <Link href="/" className="block text-foreground hover:text-primary">
+            Home
+          </Link>
+          <Link
+            href="/doctors"
+            className="block text-foreground hover:text-primary"
+          >
+            Doctors
+          </Link>
+          <Link
+            href="/appointments"
+            className="block text-foreground hover:text-primary"
+          >
+            Appointments
+          </Link>
+          <Link
+            href="/about"
+            className="block text-foreground hover:text-primary"
+          >
+            About
+          </Link>
+          <Link
+            href="/contact"
+            className="block text-foreground hover:text-primary"
+          >
+            Contact
+          </Link>
           <div className="pt-3">
-            <Link href="/appointments" className="block text-center px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition">
+            <Link
+              href="/appointments"
+              className="block text-center px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition"
+            >
               Book Appointment
             </Link>
           </div>
         </div>
       )}
     </nav>
-  )
+  );
 }
