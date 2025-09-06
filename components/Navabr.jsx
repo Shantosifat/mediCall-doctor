@@ -56,13 +56,13 @@ export default function Navbar() {
             <SignedOut>
               {/* <SignInButton /> */}
               {/* <SignUpButton> */}
-                <Link href="sign-in">
-                <button className="btn text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                  Sign In
+                <Link href="/">
+                <button className="btn btn-outline text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                  Pricing
                 </button></Link>
-                <Link href="sign-up">
-                <button className="bg-[#6c47ff] text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                  Sign Up
+                <Link href="sign-in">
+                <button className="bg-black text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                  Sign In
                 </button></Link>
               {/* </SignUpButton> */}
             </SignedOut>
