@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <div className="bg-background">
       {/* hero section */}
-      <section className="relative overflow-hidden py-16">
+      <section className="relative overflow-hidden py-20 lg:py-16">
         <div className="container mx-auto px-8">
           {/* left */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -63,7 +63,7 @@ export default function Home() {
                 alt="Doctor consultation"
                 fill
                 priority
-                className="object-cover pt-14 rounded-xl"
+                className="object-cover pt-4 lg:pt-12 rounded-xl"
               />
             </div>
           </div>
