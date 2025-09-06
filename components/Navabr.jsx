@@ -54,15 +54,24 @@ export default function Navbar() {
           {/* CTA */}
           <div className="hidden md:flex space-x-4">
             <SignedOut>
-              <SignInButton />
-              <SignUpButton>
+              {/* <SignInButton /> */}
+              {/* <SignUpButton> */}
+                <Link href="sign-in">
+                <button className="btn text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+                  Sign In
+                </button></Link>
+                <Link href="sign-up">
                 <button className="bg-[#6c47ff] text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
                   Sign Up
-                </button>
-              </SignUpButton>
+                </button></Link>
+              {/* </SignUpButton> */}
             </SignedOut>
             <SignedIn>
-              <UserButton />
+              <UserButton appearance={{
+                elements:{
+                    avatarBox: "w-10 h-10"
+                }
+              }} />
               <Link
                 href="/appointments"
                 className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition"
