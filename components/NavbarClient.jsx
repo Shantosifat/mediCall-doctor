@@ -1,14 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaHeartbeat } from "react-icons/fa";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Calendar, ShieldCheck, Stethoscope, User } from "lucide-react";
+import {
+  Calendar,
+  CreditCard,
+  ShieldCheck,
+  Stethoscope,
+  User,
+} from "lucide-react";
 import { Button } from "./ui/button";
+import { checkAndAllocateCredits } from "@/actions/credits";
+import { Badge } from "./ui/badge";
 
 export default function NavbarClient({ user }) {
   const [isOpen, setIsOpen] = useState(false);
+  // ✅ run side-effect AFTER render
+  useEffect(() => {
+    async function handleCredits() {
+      if (user) {
+        const result = await checkAndAllocateCredits(user);
+        if (result?.credits !== undefined) {
+          setCredits(result.credits);
+        }
+      }
+    }
+    handleCredits();
+  }, [user]);
 
   return (
     <nav className="fixed left-0 top-0 w-full z-50 bg-slate-700 border-b border-border">
@@ -93,10 +113,32 @@ export default function NavbarClient({ user }) {
                 </Link>
               )}
             </SignedIn>
-            <SignedOut>
-              <Link href="/">
-                <button className="btn btn-outline">Pricing</button>
+
+            {(!user || user?.role !== "ADMIN") && (
+              <Link href={user?.role === "PATIENT" ? "/pricing" : "/doctor"}>
+                <Badge
+                  variant="outline"
+                  className="h-9 bg-emerald-900/20 border-emerald-700/30 px-3 py-1 flex items-center gap-2"
+                >
+                  <CreditCard className="h-3.5 w-3.5 text-emerald-400" />
+                  <span className="text-emerald-400">
+                    {user && user.role !== "ADMIN" ? (
+                      <>
+                        {user.credits}{" "}
+                        <span className="hidden md:inline">
+                          {user?.role === "PATIENT"
+                            ? "Credits"
+                            : "Earned Credits"}
+                        </span>
+                      </>
+                    ) : (
+                      <>Pricing</>
+                    )}
+                  </span>
+                </Badge>
               </Link>
+            )}
+            <SignedOut>
               <Link href="/sign-in">
                 <button className="bg-black text-white rounded-full font-medium px-4 py-2">
                   Sign In
