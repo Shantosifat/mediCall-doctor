@@ -17,6 +17,7 @@ import { Badge } from "./ui/badge";
 
 export default function NavbarClient({ user }) {
   const [isOpen, setIsOpen] = useState(false);
+   const [credits, setCredits] = useState(user?.credits ?? 0);
   // ✅ run side-effect AFTER render
   useEffect(() => {
     async function handleCredits() {

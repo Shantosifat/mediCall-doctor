@@ -59,17 +59,19 @@ export async function checkAndAllocateCredits(user) {
         new Date(latestTransaction.createdAt),
         "yyyy-MM"
       );
-      const transactionPlan = latestTransaction.packageid;
+      const transactionPlan = latestTransaction.packageId;
 
       // if we already allocated for this month and the plan is the same, just return
       if (
         transactionMonth === currentMonth &&
         transactionPlan === currentPlan
       ) {
+         // Already allocated for this plan/month
         return user;
       }
+          // Allocate credits
 
-      const updateUser = await db.$transaction(async (tr) => {
+      const updateUser = await db.$transaction(async (tx) => {
         // Create transaction record
         await tx.creditTransaction.create({
           data: {
@@ -96,7 +98,7 @@ export async function checkAndAllocateCredits(user) {
       revalidatePath("/doctors");
       revalidatePath("/appointments");
 
-      return updatedUser;
+      return updateUser;
     }
   } catch (error) {
     console.error(
