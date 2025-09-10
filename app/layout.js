@@ -5,6 +5,7 @@ import Navbar from "@/components/Navabr";
 import Footer from "@/components/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,9 +25,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider
-    appearance={{
-      baseTheme:dark,
-    }}>
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
       <html lang="en" suppressHydrationWarning>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -42,6 +44,7 @@ export default function RootLayout({ children }) {
               <Navbar></Navbar>
             </header>
             <main className="min-h-screen"> {children}</main>
+            <Toaster richColors />
             {/* footer */}
             <footer>
               <Footer></Footer>
