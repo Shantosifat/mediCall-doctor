@@ -24,6 +24,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SPECIALTIES } from "@/lib/specialities";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 export const doctorFormSchema = z.object({
   specialty: z.string().min(1, "Specialty is required"),
@@ -78,6 +80,18 @@ const OnboardingPage = () => {
       router.push(data.redirect);
     }
   }, [data]);
+
+  const doctorFormSubmit = async (values) => {
+    if (loading) return;
+    const formData = new FormData();
+    formData.append("role", "DOCTOR");
+    formData.append("specialty", values.specialty);
+    formData.append("experience", values.experience);
+    formData.append("credentialUrl", values.credentialUrl);
+    formData.append("description", values.description);
+
+    await submitUserRole(formData);
+  };
 
   if (step === "choose-role") {
     return (
@@ -153,33 +167,16 @@ const OnboardingPage = () => {
           </CardDescription>
 
           <form
-            // onSubmit={handleSubmit(async (values) => {
-            //   if (loading) return;
-            //   const formData = new FormData();
-            //   formData.append("role", "DOCTOR");
-            //   formData.append("specialty", values.specialty);
-            //   formData.append("experience", values.experience);
-            //   formData.append("credentialUrl", values.credentialUrl);
-            //   formData.append("description", values.description);
-
-            //   await submitUserRole(formData);
-            // })}
-            className="space-y-6"
-          >
+          onSubmit={handleSubmit(doctorFormSubmit)}
+           className="space-y-6">
             {/* Specialty */}
             <div className="space-y-2">
-              {/* <label className="block mb-1 text-sm font-medium text-gray-300">
-                Specialty
-              </label> */}
               <Label htmlFor="speciality">Specialty</Label>
-              {/* <input
-                type="text"
-                placeholder="e.g., Cardiologist, Dermatologist"
-                {...register("specialty")}
-                className="w-full px-3 py-2 rounded-lg bg-emerald-950/40 border border-emerald-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-600"
-              /> */}
 
-              <Select>
+              <Select
+                value={specialityValue}
+                onValueChange={(value) => setValue("specialty", value)}
+              >
                 <SelectTrigger id="speciality">
                   <SelectValue placeholder="Select your speciality" />
                 </SelectTrigger>
@@ -205,12 +202,13 @@ const OnboardingPage = () => {
 
             {/* Experience */}
             <div>
-              <label className="block mb-1 text-sm font-medium text-gray-300">
+              <Label className="block mb-1 text-sm font-medium text-gray-300">
                 Years of Experience
-              </label>
-              <input
+              </Label>
+              <Input
+                id="experience"
                 type="number"
-                placeholder="e.g., 5"
+                placeholder="e.g. 5"
                 {...register("experience", { valueAsNumber: true })}
                 className="w-full px-3 py-2 rounded-lg bg-emerald-950/40 border border-emerald-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-600"
               />
@@ -223,10 +221,11 @@ const OnboardingPage = () => {
 
             {/* Credential URL */}
             <div>
-              <label className="block mb-1 text-sm font-medium text-gray-300">
+              <Label className="block mb-1 text-sm font-medium text-gray-300">
                 Credential / Certification URL
-              </label>
-              <input
+              </Label>
+              <Input
+                id="credentialUrl"
                 type="url"
                 placeholder="https://example.com/certificate"
                 {...register("credentialUrl")}
@@ -241,10 +240,10 @@ const OnboardingPage = () => {
 
             {/* Description */}
             <div>
-              <label className="block mb-1 text-sm font-medium text-gray-300">
+              <Label className="block mb-1 text-sm font-medium text-gray-300">
                 Professional Bio
-              </label>
-              <textarea
+              </Label>
+              <Textarea
                 rows={4}
                 placeholder="Tell us about your background, skills, and expertise..."
                 {...register("description")}
@@ -263,6 +262,7 @@ const OnboardingPage = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setStep("choose-role")}
+                disabled={loading}
                 className="border-emerald-700 text-white hover:bg-emerald-800/40"
               >
                 Back
