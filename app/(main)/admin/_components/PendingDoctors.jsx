@@ -1,0 +1,159 @@
+"use client";
+import { updateDoctorStatus } from "@/actions/admin";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+import useFetch from "@/hooks/use-fetch";
+import { format } from "date-fns";
+import { User } from "lucide-react";
+import React, { useState } from "react";
+
+const PendingDoctors = ({ doctors }) => {
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+
+  const {
+    loading,
+    data,
+    fn: submitStatusUpdate,
+  } = useFetch(updateDoctorStatus);
+
+  // Open doctor details dialog
+  const handleViewDetails = (doctor) => {
+    setSelectedDoctor(doctor);
+  };
+
+  // Close doctor details dialog
+  const handleCloseDialog = () => {
+    setSelectedDoctor(null);
+  };
+  return (
+    <div>
+      <Card className="bg-muted/20 border-emerald-900/20">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold text-white">
+            Pending Doctor Verifications
+          </CardTitle>
+          <CardDescription>
+            Review and approve doctor verification
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {doctors.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              No pending verification requests at this time.
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {doctors.map((doctor) => (
+                <Card
+                  key={doctor.id}
+                  className="bg-background border-emerald-900/20 hover:border-emerald-700/30 transition-all"
+                >
+                  <CardContent className="p-4">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div>
+                        {/* for icon */}
+                        <div className="bg-muted/20 rounded-full p-2 mb-2">
+                          <User className="h-5 w-5 text-emerald-400" />
+                        </div>
+                        {/* for name & speciality */}
+                        <div>
+                          <h3 className="font-medium text-white mb-1">
+                            {doctor.name}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {doctor.specialty} • {doctor.experience} years
+                            experience
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 self-end md:self-auto">
+                        <Badge
+                          variant="outline"
+                          className="bg-amber-900/20 border-amber-900/30 text-amber-400"
+                        >
+                          Pending
+                        </Badge>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleViewDetails(doctor)}
+                          className="border-emerald-900/30 hover:bg-muted/80"
+                        >
+                          View Details
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {selectedDoctor && (
+        <Dialog open={!!selectedDoctor} onOpenChange={handleCloseDialog}>
+          <DialogContent className="max-w-3xl">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-bold text-white">
+                Doctor Verification Details
+              </DialogTitle>
+              <DialogDescription>
+                Review the doctor's information carefully before making a
+                decision
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-6 py-4">
+              {/* Basic Info */}
+              <div className="flex flex-col md:flex-row gap-6">
+                <div className="space-y-1 flex-1">
+                  <h4 className="text-sm font-medium text-muted-foreground">
+                    Full Name
+                  </h4>
+                  <p className="text-base font-medium text-white">
+                    {selectedDoctor.name}
+                  </p>
+                </div>
+                <div className="space-y-1 flex-1">
+                  <h4 className="text-sm font-medium text-muted-foreground">
+                    Email
+                  </h4>
+                  <p className="text-base font-medium text-white">
+                    {selectedDoctor.email}
+                  </p>
+                </div>
+                <div className="space-y-1 flex-1">
+                  <h4 className="text-sm font-medium text-muted-foreground">
+                    Application Date
+                  </h4>
+                  <p className="text-base font-medium text-white">
+                    {format(new Date(selectedDoctor.createdAt), "PPP")}
+                  </p>
+                </div>
+              </div>
+              <Separator className="bg-emerald-900/20" />
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
+  );
+};
+
+export default PendingDoctors;
