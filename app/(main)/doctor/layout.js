@@ -17,4 +17,3 @@ const DcotorDashboardLayout = ({ children }) => {
 };
 
 export default DcotorDashboardLayout;
- 
