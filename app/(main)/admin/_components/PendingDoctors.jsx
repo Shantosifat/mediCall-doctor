@@ -13,6 +13,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -20,8 +21,10 @@ import {
 import { Separator } from "@/components/ui/separator";
 import useFetch from "@/hooks/use-fetch";
 import { format } from "date-fns";
-import { User } from "lucide-react";
-import React, { useState } from "react";
+import { Check, ExternalLink, FileText, Medal, User, X } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { BarLoader } from "react-spinners";
+import { toast } from "sonner";
 
 const PendingDoctors = ({ doctors }) => {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -41,6 +44,23 @@ const PendingDoctors = ({ doctors }) => {
   const handleCloseDialog = () => {
     setSelectedDoctor(null);
   };
+  // Handle approve or reject doctor
+
+  const handleUpdateStatus = async (doctorId, status) => {
+    if (loading) return;
+    const formData = new FormData();
+    formData.append("doctorId", doctorId);
+    formData.append("status", status);
+
+    await submitStatusUpdate(formData);
+  };
+  useEffect(() => {
+    if (data && data?.success) {
+      toast.success(`Approved`);
+      handleCloseDialog();
+    }
+  }, [data]);
+
   return (
     <div>
       <Card className="bg-muted/20 border-emerald-900/20">
@@ -106,10 +126,10 @@ const PendingDoctors = ({ doctors }) => {
           )}
         </CardContent>
       </Card>
-
+      {/* Doctor Details Dialog */}
       {selectedDoctor && (
         <Dialog open={!!selectedDoctor} onOpenChange={handleCloseDialog}>
-          <DialogContent className="max-w-3xl">
+          <DialogContent className="!max-w-3xl">
             <DialogHeader>
               <DialogTitle className="text-xl font-bold text-white">
                 Doctor Verification Details
@@ -148,7 +168,89 @@ const PendingDoctors = ({ doctors }) => {
                 </div>
               </div>
               <Separator className="bg-emerald-900/20" />
+
+              {/* Professional Details */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Medal className="h-5 w-5 text-emerald-400" />
+                  <h3 className="text-white font-medium">
+                    Professional Information
+                  </h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
+                  <div className="space-y-1">
+                    <h4 className="text-sm font-medium text-muted-foreground">
+                      Specialty
+                    </h4>
+                    <p className="text-white">{selectedDoctor.specialty}</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <h4 className="text-sm font-medium text-muted-foreground">
+                      Years of Experience
+                    </h4>
+                    <p className="text-white">
+                      {selectedDoctor.experience} years
+                    </p>
+                  </div>
+                  <div className="space-y-1 col-span-2">
+                    <h4 className="text-sm font-medium text-muted-foreground">
+                      Credentials
+                    </h4>
+                    <div className="flex items-center">
+                      <a
+                        href={selectedDoctor.credentialUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-emerald-400 hover:text-emerald-300 flex items-center"
+                      >
+                        View Credentials
+                        <ExternalLink className="h-4 w-4 ml-1" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <Separator className="bg-emerald-900/20" />
+
+              {/* Description */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-emerald-400" />
+                  <h3 className="text-white font-medium">
+                    Service Description
+                  </h3>
+                </div>
+                <p className="text-muted-foreground whitespace-pre-line">
+                  {selectedDoctor.description}
+                </p>
+              </div>
             </div>
+            {loading && <BarLoader width={"100%"} color="#36d7b7" />}
+
+            <DialogFooter className="flex sm:justify-between">
+              <Button
+                variant="destructive"
+                onClick={() =>
+                  handleUpdateStatus(selectedDoctor.id, "REJECTED")
+                }
+                disabled={loading}
+                className="bg-red-600 hover:bg-red-700"
+              >
+                <X className="mr-2 h-4 w-4" />
+                Reject
+              </Button>
+              <Button
+                onClick={() =>
+                  handleUpdateStatus(selectedDoctor.id, "VERIFIED")
+                }
+                disabled={loading}
+                className="bg-emerald-600 hover:bg-emerald-700"
+              >
+                <Check className="mr-2 h-4 w-4" />
+                Approve
+              </Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       )}

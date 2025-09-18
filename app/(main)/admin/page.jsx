@@ -4,8 +4,8 @@ import React from "react";
 import PendingDoctors from "./_components/PendingDoctors";
 import VerifiedDoctors from "./_components/VerifiedDoctors";
 
-const AdminPage =async () => {
-  const [pendingDoctorsData, verifiedDoctorsData] =await Promise.all([
+const AdminPage = async () => {
+  const [pendingDoctorsData, verifiedDoctorsData] = await Promise.all([
     getPendingDoctors(),
     getVerifiedDoctors(),
   ]);
@@ -15,7 +15,7 @@ const AdminPage =async () => {
         <PendingDoctors doctors={pendingDoctorsData.doctors || []} />
       </TabsContent>
       <TabsContent value="doctors" className="border-none p-0">
-        <VerifiedDoctors dcotors={verifiedDoctorsData.doctors || []} />
+        <VerifiedDoctors doctors={verifiedDoctorsData.doctors || []} />
       </TabsContent>
     </div>
   );
