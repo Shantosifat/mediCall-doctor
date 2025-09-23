@@ -108,3 +108,6 @@ export async function checkAndAllocateCredits(user) {
     return null;
   }
 }
+
+
+export async function deductCreditsForAppointment(){}

@@ -42,13 +42,13 @@ export default function NavbarClient({ user }) {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
+          {/* <div className="hidden md:flex space-x-8">
             <Link href="/">Home</Link>
             <Link href="/doctors">Doctors</Link>
             <Link href="/appointments">Appointments</Link>
             <Link href="/about">About</Link>
             <Link href="/contact">Contact</Link>
-          </div>
+          </div> */}
 
           {/* CTA */}
           <div className="hidden md:flex space-x-4">

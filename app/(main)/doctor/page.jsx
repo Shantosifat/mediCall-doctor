@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 const DoctorDashboard = async () => {
   const user = await getCurrentUser();
 
-  const [appointmentsData, availabilityData] = await Promise.all([
+  const [availabilityData, appointmentsData] = await Promise.all([
     getDoctorAvailability(),
     getDoctorAppointments(),
   ]);
@@ -47,15 +47,15 @@ const DoctorDashboard = async () => {
           </TabsTrigger>
         </TabsList>
 
-       <div className="md:col-span-3">
-         {/* for right side content */}
-        <TabsContent value="appointments" className="border-none p-0">
-          todo
-        </TabsContent>
-        <TabsContent value="availability" className="border-none p-0">
-          <AvailabilitySettings slots={availabilityData.slots || []} />
-        </TabsContent>
-       </div>
+        <div className="md:col-span-3">
+          {/* for right side content */}
+          <TabsContent value="appointments" className="border-none p-0">
+            todo
+          </TabsContent>
+          <TabsContent value="availability" className="border-none p-0">
+            <AvailabilitySettings slots={availabilityData.slots || []} />
+          </TabsContent>
+        </div>
       </Tabs>
     </div>
   );

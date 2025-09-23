@@ -11,8 +11,6 @@
 
 // export default SpecilaityPage;
 
-
-
 // when its a server component
 
 import { redirect } from "next/navigation";
@@ -38,7 +36,11 @@ export default async function SpecialtyPage({ params }) {
   return (
     <div className="space-y-5">
       <PageHeader
-        title={speciality.split("%20").join(" ")}
+        title={
+          <span className="text-emerald-500">
+            {speciality.split("%20").join(" ")}
+          </span>
+        }
         backLink="/doctors"
         backLabel="All Specialties"
       />
@@ -63,4 +65,3 @@ export default async function SpecialtyPage({ params }) {
     </div>
   );
 }
-

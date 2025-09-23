@@ -12,12 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useFetch from "@/hooks/use-fetch";
+import { format } from "date-fns";
 import { AlertCircle, Clock, Loader2, Plus } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const AvailabilitySettings = ({ slots }) => {
+    console.log(slots);
   const [showForm, setShowForm] = useState(false);
 
   // custom hook for server action
@@ -83,13 +85,13 @@ const AvailabilitySettings = ({ slots }) => {
   }, [data]);
 
   // Format time string for display
-  const formatTimeString = (dateString) => {
-    try {
-      return format(new Date(dateString), "h:mm a");
-    } catch (e) {
-      return "Invalid time";
-    }
-  };
+    const formatTimeString = (dateString) => {
+      try {
+        return format(new Date(dateString), "h:mm a");
+      } catch (e) {
+        return "Invalid time";
+      }
+    };
 
   return (
     <Card className="border-emerald-900/20">
@@ -109,14 +111,16 @@ const AvailabilitySettings = ({ slots }) => {
               <h3 className="text-lg font-medium text-white mb-3">
                 Current Availability
               </h3>
+
               {slots.length === 0 ? (
                 <p className="text-muted-foreground">
                   You haven&apos;t set any availability slots yet. Add your
                   availability to start accepting appointments.
                 </p>
               ) : (
-                <div className="space-y-3">
+                <div>
                   {slots.map((slot) => {
+                    console.log(slot);
                     return (
                       <div
                         key={slot.id}
@@ -126,7 +130,7 @@ const AvailabilitySettings = ({ slots }) => {
                           <Clock className="h-4 w-4 text-emerald-400" />
                         </div>
 
-                        <p className="text-white font-medium">
+                      <p className="text-white font-medium">
                           {formatTimeString(slot.startTime)} -{" "}
                           {formatTimeString(slot.endTime)}
                         </p>
@@ -136,6 +140,7 @@ const AvailabilitySettings = ({ slots }) => {
                 </div>
               )}
             </div>
+
             <Button
               onClick={() => setShowForm(true)}
               className="w-full bg-emerald-600 hover:bg-emerald-700"

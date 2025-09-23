@@ -113,6 +113,6 @@ export async function getDoctorAvailability() {
   }
 }
 
-export async function getDoctorAppointments() {
-  return [];
+export async function getDoctorAppointments(){
+    return []
 }
