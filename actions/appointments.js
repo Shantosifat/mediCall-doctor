@@ -99,10 +99,9 @@ export async function getAvailableTimeSlots(doctorId) {
       const end = new Date(availabilityEnd);
 
       while (
-        (isBefore(addMinutes(current, 30), end) 
+        isBefore(addMinutes(current, 30), end)
         // || +addMinutes(current, 30),
         // +end
-    )
       ) {
         const next = addMinutes(current, 30);
         // Skip past slots
@@ -203,6 +202,9 @@ export async function bookAppointment(formData) {
     if (patient.credits < 2) {
       throw new Error("Insufficient credits to book an appointment");
     }
+    
+
+    
 
     // Check if the requested time slot is available
     const overlappingAppointment = await db.appointment.findFirst({

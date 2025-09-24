@@ -28,7 +28,7 @@ import { useRouter } from "next/navigation";
 import AppointmentForm from "./appointment-form";
 
 const DoctorProfile = ({ doctor, availableDays }) => {
-    console.log(availableDays);
+  // console.log(availableDays);
   const [showBooking, setShowBooking] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const router = useRouter();
