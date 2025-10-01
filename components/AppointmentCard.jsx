@@ -33,6 +33,8 @@ import {
 } from "./ui/dialog";
 import { Textarea } from "./ui/textarea";
 import { toast } from "sonner";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AppointmentCard = ({ appointment, userRole, refetchAppointments }) => {
   // console.log(appointment);
@@ -151,16 +153,6 @@ const AppointmentCard = ({ appointment, userRole, refetchAppointments }) => {
   const handleCancelAppointment = async () => {
     if (cancelLoading) return;
 
-    // Check if appointment end time has passed
-    const now = new Date();
-    const appointmentEndTime = new Date(appointment.endTime);
-
-    if (now < appointmentEndTime) {
-      alert(
-        "Cannot mark appointment as completed before the scheduled end time."
-      );
-      return;
-    }
 
     if (
       window.confirm(
@@ -174,6 +166,7 @@ const AppointmentCard = ({ appointment, userRole, refetchAppointments }) => {
   };
 
   useEffect(() => {
+      console.log("cancelData:", cancelData);
     if (cancelData?.success) {
       toast.success("Appointment cancelled successfully");
       setOpen(false);
@@ -530,6 +523,7 @@ const AppointmentCard = ({ appointment, userRole, refetchAppointments }) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+       <ToastContainer position="top-center" autoClose={3000} />
     </>
   );
 };
